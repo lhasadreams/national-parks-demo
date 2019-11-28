@@ -124,7 +124,7 @@ spec:
         fsGroup: 42
       containers:
       - name: national-parks-app
-        image: lhasadreams/national-parks:stable
+        image: lhasadreams/national-parks:latest
         args:
         - --peer
         - hab-bastion
