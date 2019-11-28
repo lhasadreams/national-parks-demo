@@ -18,6 +18,21 @@ spec:
   clusterIP: None
 
 ---
+apiVersion: v1
+kind: Service
+metadata:
+  name: hab-bastion-9631
+spec:
+  ports:
+  - name: http-gateway
+    protocol: TCP
+    port: 9631
+    targetPort: 9631
+  selector:
+    app: hab-bastion
+  type: LoadBalancer
+
+---
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
@@ -37,7 +52,7 @@ spec:
         fsGroup: 42
       containers:
       - name: hab-bastion
-        image: jvogtacr.azurecr.io/hab_bastion:latest
+        image: lhasadreams/hab_bastion:0.1.0
         args:
         - '--permanent-peer'
         ports:
@@ -73,7 +88,7 @@ spec:
         fsGroup: 42
       containers:
       - name: national-parks-db
-        image: jvogtacr.azurecr.io/mongodb:3.2.10
+        image: lhasadreams/mongodb:3.2.10
         args:
         - --peer
         - hab-bastion
@@ -109,7 +124,7 @@ spec:
         fsGroup: 42
       containers:
       - name: national-parks-app
-        image: jvogtacr.azurecr.io/national-parks:7.0.0
+        image: lhasadreams/national-parks:stable
         args:
         - --peer
         - hab-bastion
